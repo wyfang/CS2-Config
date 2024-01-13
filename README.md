@@ -1,0 +1,1 @@
+You need to set cs2_video.txt to read-only after downloading, as this setting has longer shadow distances than the in-game setting while ensuring the lowest quality, and shadows are rendered at the lowest quality.
