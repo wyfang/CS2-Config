@@ -66,7 +66,7 @@
 		"name"		"Wi-Fi | WANGYIFANG.COM"
 		"option_duck_method"		"false"
 		"option_speed_method"		"false"
-		"player_nevershow_communityservermessage"		"0"
+		"player_nevershow_communityservermessage"		"1"
 		"player_teamplayedlast"		"3"
 		"sensitivity"		"1.000000"
 		"skill"		"1"
