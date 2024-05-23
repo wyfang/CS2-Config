@@ -30,7 +30,9 @@
 		"."		"toggle voice_loopback 1 0"
 		"\"		"toggle volume 0.1 1; say_team [0.1/1] 音量切换！"
 		"F2"		"+radialradio"
-		"CAPSLOCK"		"toggle sensitivity 1 2"
+		"CAPSLOCK"		"switchhands"
 		"`"		"toggleconsole"
+		"MOUSE1"		"+attack"
+		"o"		"wifi-view1"
 	}
 }
