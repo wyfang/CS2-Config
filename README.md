@@ -16,6 +16,33 @@
 
 > `89582913` 是 Steam userdata ID。如果用于其他 Steam 账号，需要替换为对应账号的 userdata ID。
 
+## Windows 备份与同步脚本
+
+仓库根目录提供三个个人维护脚本：
+
+| 脚本 | 功能 |
+| --- | --- |
+| [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | 从主账号 `C:\Steam\userdata\89582913\730` 中只备份 `730-Original` 列出的四个必要文件；同时备份 `autoexec.cfg` 和所有 `wifi-*` CFG。两类时间戳备份各保留最近 5 份，完成后启动 Steam。 |
+| [`同步主账号730.bat`](./同步主账号730.bat) | 验证 OneDrive 中四个必要文件完整后，删除主账号的整个 `730`，再复制干净的四文件版本。只处理账号 `89582913`，不会启动 Steam。 |
+| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | 验证四个必要文件后，遍历 `C:\Steam\userdata`，只处理包含 `config\localconfig.vdf` 的真实 Steam 账号目录。每个账号原有的 `730` 都会被删除并替换成相同的四文件版本。 |
+
+脚本使用以下固定路径和环境：
+
+- Steam 根目录：`C:\Steam`
+- OneDrive 环境变量：`%OneDrive%`
+- 干净的 730：`%OneDrive%\CS2\cfg\730`
+- 备份筛选模板：`%OneDrive%\CS2\730-Original`
+- 游戏 CFG：`C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
+
+推荐用法：
+
+1. 执行同步脚本前完全退出 Steam，避免 Steam 在脚本运行期间重新写入配置。
+2. 日常启动可以运行“备份 730 逐个文件和 CFG 后启动 Steam”，它会先保存上一轮游戏留下的配置，再启动 Steam。
+3. 需要恢复主账号时运行“同步主账号 730”。
+4. 需要让本机所有 Steam 账号使用同一套配置时，才运行“同步所有账号 730”。
+
+> 两个同步脚本都会永久删除目标账号原有的整个 `730`，然后恢复四个必要文件。它们会在删除前检查源文件是否完整，但仍应确认 OneDrive 已同步完成。Steam/CS2 后续可能重新生成缓存文件，这是正常现象；备份脚本不会保存这些缓存。
+
 ## 自定义按键
 
 | 按键 | 功能 |
