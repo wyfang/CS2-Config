@@ -1,79 +1,83 @@
 <p align="center">
-  <a href="./README.md"><kbd>English</kbd></a>
-  <a href="./README.zh-CN.md"><kbd>简体中文</kbd></a>
+  <a href="./README.md">
+    <img src="https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-2ea44f?style=for-the-badge" alt="简体中文">
+  </a>
+  <a href="./README.en.md">
+    <img src="https://img.shields.io/badge/Language-English-0969da?style=for-the-badge" alt="English">
+  </a>
 </p>
 
 # CS2 Config
 
-This is a customized CS2 configuration for Steam userdata account ID `89582913`. The repository mirrors the Steam root directory layout, so you can download the ZIP, extract it, and copy its contents directly into your Steam root folder.
+这是一套适用于 Steam 账号 `89582913` 的 CS2 配置。仓库目录已经按照 Steam 根目录组织，下载 ZIP 并解压后，可以直接把内容复制到 Steam 根目录。
 
-## Installation
+## 安装
 
-1. Download and extract the repository ZIP.
-2. Copy the extracted `steamapps` and `userdata` folders into your Steam root directory, such as `C:\Steam`.
-3. Start CS2 and run `exec autoexec` in the console, or confirm that the game automatically loaded `autoexec.cfg`.
-4. It is recommended to set `userdata/89582913/730/local/cfg/cs2_video.txt` to read-only. This configuration keeps shadows at the lowest quality while retaining a longer shadow distance than the in-game settings menu exposes.
+1. 下载并解压仓库 ZIP。
+2. 将解压后的 `steamapps` 和 `userdata` 复制到 Steam 根目录，例如 `C:\Steam`。
+3. 启动 CS2 后在控制台执行 `exec autoexec`，或者确认游戏已自动加载 `autoexec.cfg`。
+4. 建议将 `userdata/89582913/730/local/cfg/cs2_video.txt` 设为只读。该文件使用最低阴影质量，同时保留比游戏设置界面更远的阴影距离。
 
-Main directories:
+主要目录：
 
-- Game scripts: `steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg`
-- User configuration: `userdata/89582913/730`
+- 游戏脚本：`steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg`
+- 用户配置：`userdata/89582913/730`
 
-> `89582913` is a Steam userdata ID. Replace it with the appropriate userdata ID when using this configuration with another Steam account.
+> `89582913` 是 Steam userdata ID。如果用于其他 Steam 账号，需要替换为对应账号的 userdata ID。
 
-## Windows Backup and Synchronization Scripts
+## Windows 备份与同步脚本
 
-The repository root contains three personal maintenance scripts:
+仓库根目录提供三个个人维护脚本：
 
-| Script | Purpose |
+| 脚本 | 功能 |
 | --- | --- |
-| [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | Backs up only the four required files listed by `730-Original` from the primary account at `C:\Steam\userdata\89582913\730`. It also backs up `autoexec.cfg` and every `wifi-*` CFG. The five newest timestamped backups are retained for each group, and Steam is launched when the backup finishes. |
-| [`同步主账号730.bat`](./同步主账号730.bat) | Verifies that all four required OneDrive files exist, deletes the primary account's entire `730` folder, and restores the clean four-file version. It only processes account `89582913` and does not start Steam. |
-| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | Verifies the four required files, scans `C:\Steam\userdata`, and only processes real Steam account directories containing `config\localconfig.vdf`. Each account's existing `730` folder is deleted and replaced with the same clean four-file version. |
+| [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | 从主账号 `C:\Steam\userdata\89582913\730` 中只备份 `730-Original` 列出的四个必要文件；同时备份 `autoexec.cfg` 和所有 `wifi-*` CFG。两类时间戳备份各保留最近 5 份，完成后启动 Steam。 |
+| [`同步主账号730.bat`](./同步主账号730.bat) | 验证 OneDrive 中四个必要文件完整后，删除主账号的整个 `730`，再复制干净的四文件版本。只处理账号 `89582913`，不会启动 Steam。 |
+| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | 验证四个必要文件后，遍历 `C:\Steam\userdata`，只处理包含 `config\localconfig.vdf` 的真实 Steam 账号目录。每个账号原有的 `730` 都会被删除并替换成相同的四文件版本。 |
 
-The scripts use these fixed paths and environment settings:
+脚本使用以下固定路径和环境：
 
-- Steam root: `C:\Steam`
-- OneDrive environment variable: `%OneDrive%`
-- Clean 730 source: `%OneDrive%\CS2\cfg\730`
-- Backup selection template: `%OneDrive%\CS2\730-Original`
-- Game CFG directory: `C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
+- Steam 根目录：`C:\Steam`
+- OneDrive 环境变量：`%OneDrive%`
+- 干净的 730：`%OneDrive%\CS2\cfg\730`
+- 备份筛选模板：`%OneDrive%\CS2\730-Original`
+- 游戏 CFG：`C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
 
-Recommended workflow:
+推荐用法：
 
-1. Fully exit Steam before running either synchronization script so Steam cannot rewrite configuration files during the operation.
-2. For routine launches, run `备份730逐个文件和CFG后启动Steam.bat`. It saves the configuration left by the previous session before starting Steam.
-3. Run `同步主账号730.bat` when you need to restore the primary account.
-4. Only run `同步所有账号730-Onedrive.bat` when every Steam account on the computer should use the same configuration.
+1. 执行同步脚本前完全退出 Steam，避免 Steam 在脚本运行期间重新写入配置。
+2. 日常启动可以运行“备份 730 逐个文件和 CFG 后启动 Steam”，它会先保存上一轮游戏留下的配置，再启动 Steam。
+3. 需要恢复主账号时运行“同步主账号 730”。
+4. 需要让本机所有 Steam 账号使用同一套配置时，才运行“同步所有账号 730”。
 
-> Both synchronization scripts permanently delete the target account's entire `730` folder before restoring the four required files. They verify the source files before deletion, but you should still confirm that OneDrive has finished syncing. Steam or CS2 may regenerate cache files afterward; this is normal, and the backup script does not preserve those caches.
+> 两个同步脚本都会永久删除目标账号原有的整个 `730`，然后恢复四个必要文件。它们会在删除前检查源文件是否完整，但仍应确认 OneDrive 已同步完成。Steam/CS2 后续可能重新生成缓存文件，这是正常现象；备份脚本不会保存这些缓存。
 
-## Custom Key Bindings
+## 自定义按键
 
-| Key | Function |
+| 按键 | 功能 |
 | --- | --- |
-| `/` | Toggles the microphone between always-on and off. The first press opens the microphone; the second press closes it. |
-| `Mouse4` | Standard push-to-talk, used separately from `/` for different situations. |
-| `F5` | Cycles through all-chat messages: `GET LEETIFY` → `!allstar`. |
-| `F6` | Cycles through three English GLHF and commendation messages. |
-| `F7` | Cycles through two Chinese commendation messages. |
-| `F8` | Sends the Chinese message explaining that the daily commendation limit has been reached. |
-| `O` | Cycles between the recoil-following crosshair (`wifi-crosshair6.cfg`) and the personal regular crosshair (`wifi-crosshair5.cfg`). The selected result is announced in team chat. |
-| `Mouse5` | Cycles between two viewmodel presets: `x=-2, y=-2, z=2, fov=54` ↔ `x=1, y=1, z=-1, fov=60`. |
-| `V` | Places a player ping and runs `wifi-watch-this-spot.cfg` to send a bilingual warning through the chat wheel. |
-| `-` | Sends `-98hp` in team chat. |
-| `.` | Toggles `voice_loopback` so you can monitor your own in-game microphone. |
-| `\` | Toggles the main volume between `0.1` and `1`, with a team-chat notification. |
-| `[` | Sends `<<<` in team chat. |
-| `]` | Sends `>>>` in team chat. |
-| `=` | Sends `Save` in team chat. |
-| `Caps Lock` | Switches the weapon between the left and right hand. |
-| `K` | Toggles `r_drawothermodels 1/2` and sends `.drop` in team chat. The model command requires an environment where cheats are allowed. |
-| `Alt` | Attempts to enable `sv_cheats`, toggles `r_aoproxy_show`, and selects `slot12`. Cheat-protected commands do not work on official servers. |
+| `/` | 切换麦克风常开/关闭。第一次按下常开，第二次按下关闭。 |
+| `Mouse4` | 标准按住说话。与 `/` 分别用于不同场景。 |
+| `F5` | 循环发送全体聊天：`GET LEETIFY` → `!allstar`。 |
+| `F6` | 循环发送三条英文 GLHF/赞美引导消息。 |
+| `F7` | 循环发送两条中文赞美引导消息。 |
+| `F8` | 发送当日赞美次数已用完的中文说明。 |
+| `O` | 在“跟随后坐力准星”（`wifi-crosshair6.cfg`）和“个人常规准星”（`wifi-crosshair5.cfg`）之间循环。切换结果会发送到队伍聊天。 |
+| `Mouse5` | 在两套持枪视角之间循环：`x=-2, y=-2, z=2, fov=54` ↔ `x=1, y=1, z=-1, fov=60`。 |
+| `V` | 标记位置，同时执行 `wifi-watch-this-spot.cfg` 发送中英文警告轮盘消息。 |
+| `-` | 队伍聊天发送 `-98hp`。 |
+| `.` | 切换 `voice_loopback`，用于监听自己的游戏内麦克风。 |
+| `\` | 在 `0.1` 和 `1` 之间切换主音量，并在队伍聊天提示。 |
+| `[` | 队伍聊天发送 `<<<`。 |
+| `]` | 队伍聊天发送 `>>>`。 |
+| `=` | 队伍聊天发送 `Save`。 |
+| `Caps Lock` | 切换左右手持枪。 |
+| `K` | 切换 `r_drawothermodels 1/2`，并在队伍聊天发送 `.drop`；模型命令需要允许作弊的环境。 |
+| `Alt` | 尝试启用 `sv_cheats`、切换 `r_aoproxy_show`，然后选择 `slot12`；作弊相关命令在官方服务器不会生效。 |
 
-The F5, F6, and F7 cycles restart from their first message whenever the game restarts or `autoexec` is executed again.
+F5、F6、F7 的循环状态在重新启动游戏或重新执行 `autoexec` 后，会从各自的第一条消息开始。
 
-Complete chat-message order:
+循环发言的完整顺序：
 
 - **F5**
   1. `GET LEETIFY`
@@ -88,45 +92,45 @@ Complete chat-message order:
 - **F8**
   - `对不起，给你点赞的时候提示无法完成，众所周知，一个账号一天只能提交3次，非常遗憾，但我保证我会点击下次为您服务，谢谢！`
 
-## Standard Key Bindings
+## 常规按键
 
-| Category | Keys and functions |
+| 分类 | 按键与功能 |
 | --- | --- |
-| Movement | `W/A/S/D` moves forward, left, backward, and right; `Shift` walks; `Ctrl` crouches; `Space` or mouse wheel down jumps; Up Arrow looks upward. |
-| Weapons | `Mouse1` attacks; `Mouse2` uses secondary attack; `R` reloads; `Q` selects the previous weapon; `G` drops; `E` uses. |
-| Weapon slots | Number keys `1–9` select `slot1–slot9`; `0` selects `slot10`; mouse wheel up selects the previous inventory item. |
-| Buying | `B` opens the buy menu; `F3` autobuys; `F4` rebuys; `,` buys primary ammunition; `Delete` sells everything back. |
-| Communication | `Z/X/C` open the three radio menus; `Mouse3` opens radial radio; `Y` opens all chat; `U` opens team chat. |
-| Interface | `Tab` shows the scoreboard; `I` toggles the loadout display; backtick opens the console; `Esc` cancels or returns. |
-| Other | `F` inspects the weapon; `T` opens the spray menu; `H` is unbound. |
+| 移动 | `W/A/S/D` 前后左右，`Shift` 行走，`Ctrl` 下蹲，`Space` 或滚轮向下跳跃，方向键上抬头。 |
+| 武器 | `Mouse1` 攻击，`Mouse2` 次要攻击，`R` 换弹，`Q` 上一件武器，`G` 丢弃，`E` 使用。 |
+| 武器槽 | 数字 `1–9` 对应 `slot1–slot9`，`0` 对应 `slot10`，滚轮向上选择上一件物品。 |
+| 购买 | `B` 购买菜单，`F3` 自动购买，`F4` 重新购买，`,` 购买主武器弹药，`Delete` 全部卖回。 |
+| 交流 | `Z/X/C` 三组无线电菜单，`Mouse3` 径向无线电，`Y` 全体聊天，`U` 队伍聊天。 |
+| 界面 | `Tab` 计分板，`I` 显示装备，反引号打开控制台，`Esc` 取消/返回。 |
+| 其他 | `F` 检视武器，`T` 喷漆菜单，`H` 未绑定。 |
 
-## CFG Files
+## CFG 文件
 
-| File | Purpose |
+| 文件 | 用途 |
 | --- | --- |
-| `autoexec.cfg` | Aliases and bindings for microphone control, chat-message cycles, crosshairs, and viewmodels. |
-| `wifi-crosshair1.cfg`–`wifi-crosshair6.cfg` | Saved crosshair presets. The O key currently uses presets 5 and 6. |
-| `wifi-watch-this-spot.cfg` | Chat-wheel location warning used by the V key. |
-| `wifi-low-hp.cfg` | Spare low-health chat-wheel message script. |
+| `autoexec.cfg` | 麦克风、循环聊天、准星和持枪视角的 alias 与绑定。 |
+| `wifi-crosshair1.cfg`–`wifi-crosshair6.cfg` | 保存的准星预设；当前 O 键使用第 5、6 套。 |
+| `wifi-watch-this-spot.cfg` | V 键的位置警告轮盘消息。 |
+| `wifi-low-hp.cfg` | 低血量轮盘消息备用脚本。 |
 
-## Minimal 730 Backup
+## 最小化的 730 备份
 
-The repository retains only the four files required to restore the intended settings:
+仓库只保留恢复设置真正需要的四个文件：
 
-| File | Stored settings |
+| 文件 | 保存内容 |
 | --- | --- |
-| `local/cfg/cs2_machine_convars.vcfg` | HUD, radar, audio, client, and machine-related settings. |
-| `local/cfg/cs2_user_convars_0_slot0.vcfg` | Sensitivity, crosshair, viewmodel, and other user settings. |
-| `local/cfg/cs2_user_keys_0_slot0.vcfg` | Key bindings for the current account. |
-| `local/cfg/cs2_video.txt` | Resolution, display mode, and graphics quality. |
+| `local/cfg/cs2_machine_convars.vcfg` | HUD、雷达、声音、客户端和机器相关设置。 |
+| `local/cfg/cs2_user_convars_0_slot0.vcfg` | 灵敏度、准星、持枪视角等用户参数。 |
+| `local/cfg/cs2_user_keys_0_slot0.vcfg` | 当前账号的按键绑定。 |
+| `local/cfg/cs2_video.txt` | 分辨率、显示模式和图形质量。 |
 
-The following files are generated data or Steam Cloud caches and are deliberately excluded from backup and restoration:
+以下内容属于自动生成或 Steam Cloud 缓存，不纳入备份恢复：
 
 - `remote/`
 - `remotecache.vdf`
 - `*_lastclouded`
-- Empty `cs2_user_keys_0_slot1–3.vcfg` files
+- 空的 `cs2_user_keys_0_slot1–3.vcfg`
 - `socache.dt`
 - `cnlauncher.txt`
 
-This keeps restoration limited to intentional settings and prevents stale cloud state, inventory caches, or unused slots from being copied back into the game directory.
+这样恢复时只写入明确需要的设置，不会把旧云端状态、库存缓存或无效槽位带回游戏目录。
