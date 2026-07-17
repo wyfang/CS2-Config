@@ -18,19 +18,6 @@ if not exist "%source%" (
     exit /b 1
 )
 
-:: 删除目标前，确认四个必要配置文件完整，避免误删后无法恢复
-for %%F in (
-    "local\cfg\cs2_machine_convars.vcfg"
-    "local\cfg\cs2_user_convars_0_slot0.vcfg"
-    "local\cfg\cs2_user_keys_0_slot0.vcfg"
-    "local\cfg\cs2_video.txt"
-) do (
-    if not exist "%source%\%%~F" (
-        echo 错误: 缺少必要文件 %source%\%%~F
-        exit /b 1
-    )
-)
-
 :: 删除目标文件夹（如果存在）
 if exist "%destination%" (
     echo 正在删除目标文件夹 %destination%...
@@ -49,7 +36,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: 将源文件夹中的文件复制到目标文件夹
+:: 将恢复源中的全部文件直接复制到新的 730
 echo 正在从 %source% 复制到 %destination%...
 xcopy "%source%" "%destination%" /E /H /C /I /Y
 if errorlevel 1 (

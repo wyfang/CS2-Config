@@ -31,15 +31,15 @@ The repository root contains three personal maintenance scripts:
 
 | Script | Purpose |
 | --- | --- |
-| [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | Backs up only the four required files listed by `730-Original` from the primary account at `C:\Steam\userdata\89582913\730`. It also backs up `autoexec.cfg` and every `wifi-*` CFG. The five newest timestamped backups are retained for each group, and Steam is launched when the backup finishes. |
-| [`同步主账号730.bat`](./同步主账号730.bat) | Verifies that all four required OneDrive files exist, deletes the primary account's entire `730` folder, and restores the clean four-file version. It only processes account `89582913` and does not start Steam. |
-| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | Verifies the four required files, scans `C:\Steam\userdata`, and only processes real Steam account directories containing `config\localconfig.vdf`. Each account's existing `730` folder is deleted and replaced with the same clean four-file version. |
+| [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | Uses `730-Original` as the sole file manifest and backs up each corresponding file from the primary account at `C:\Steam\userdata\89582913\730`. Future additions or removals in the manifest require no script changes. Missing files do not stop the backup; they are listed together after the 730 backup finishes. The script also backs up `autoexec.cfg` and every `wifi-*` CFG, retains the five newest timestamped backups for each group, and launches Steam when finished. |
+| [`同步主账号730.bat`](./同步主账号730.bat) | Deletes the primary account's entire `730` folder, recreates it, and directly copies every file from `%OneDrive%\CS2\cfg\730`. It only processes account `89582913` and does not start Steam. |
+| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | Scans `C:\Steam\userdata` and only processes real Steam account directories containing `config\localconfig.vdf`. Each account's existing `730` folder is completely deleted, then the same restore source is copied in full. |
 
 The scripts use these fixed paths and environment settings:
 
 - Steam root: `C:\Steam`
 - OneDrive environment variable: `%OneDrive%`
-- Clean 730 source: `%OneDrive%\CS2\cfg\730`
+- Complete 730 restore source: `%OneDrive%\CS2\cfg\730`
 - Backup selection template: `%OneDrive%\CS2\730-Original`
 - Game CFG directory: `C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
 
@@ -50,7 +50,7 @@ Recommended workflow:
 3. Run `同步主账号730.bat` when you need to restore the primary account.
 4. Only run `同步所有账号730-Onedrive.bat` when every Steam account on the computer should use the same configuration.
 
-> Both synchronization scripts permanently delete the target account's entire `730` folder before restoring the four required files. They verify the source files before deletion, but you should still confirm that OneDrive has finished syncing. Steam or CS2 may regenerate cache files afterward; this is normal, and the backup script does not preserve those caches.
+> Both synchronization scripts permanently delete the target account's entire `730` folder without comparing individual files, then copy the entire restore source. Before running either script, confirm that `%OneDrive%\CS2\cfg\730` is the complete version you intend to restore and that OneDrive has finished syncing.
 
 ## Custom Key Bindings
 
@@ -113,24 +113,15 @@ Complete chat-message order:
 | `wifi-watch-this-spot.cfg` | Chat-wheel location warning used by the V key. |
 | `wifi-low-hp.cfg` | Spare low-health chat-wheel message script. |
 
-## Minimal 730 Backup
+## Complete Backup Driven by 730-Original
 
-The repository retains only the four files required to restore the intended settings:
+Real-world testing showed that keeping only four configuration files causes some game settings to be lost. The repository's `userdata/89582913/730` now contains the tested set that restores all settings, including files under `local` and `remote`, `*_lastclouded`, slots 1–3, `socache.dt`, and `remotecache.vdf`.
 
-| File | Stored settings |
-| --- | --- |
-| `local/cfg/cs2_machine_convars.vcfg` | HUD, radar, audio, client, and machine-related settings. |
-| `local/cfg/cs2_user_convars_0_slot0.vcfg` | Sensitivity, crosshair, viewmodel, and other user settings. |
-| `local/cfg/cs2_user_keys_0_slot0.vcfg` | Key bindings for the current account. |
-| `local/cfg/cs2_video.txt` | Resolution, display mode, and graphics quality. |
+The backup script no longer embeds a fixed list of filenames. `%OneDrive%\CS2\730-Original` is the sole manifest:
 
-The following files are generated data or Steam Cloud caches and are deliberately excluded from backup and restoration:
+- Adding a file to the manifest automatically includes it in the next backup.
+- Removing a file from the manifest automatically excludes it from the next backup.
+- If a manifest file is missing from the game's 730 folder, the script continues and prints all missing items together after the 730 backup finishes.
+- A backup snapshot contains the manifest files that were present in the game's 730 folder at that time.
 
-- `remote/`
-- `remotecache.vdf`
-- `*_lastclouded`
-- Empty `cs2_user_keys_0_slot1–3.vcfg` files
-- `socache.dt`
-- `cnlauncher.txt`
-
-This keeps restoration limited to intentional settings and prevents stale cloud state, inventory caches, or unused slots from being copied back into the game directory.
+Restoration remains intentionally simple: the synchronization scripts delete the target account's entire `730` folder and directly copy everything from `%OneDrive%\CS2\cfg\730`. They do not compare the restore source against `730-Original`, so the restore source itself must be verified as correct and complete beforehand.

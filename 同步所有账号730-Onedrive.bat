@@ -18,19 +18,6 @@ if not exist "%source%" (
     exit /b 1
 )
 
-:: 删除任何账号配置前，确认四个必要文件完整
-for %%F in (
-    "local\cfg\cs2_machine_convars.vcfg"
-    "local\cfg\cs2_user_convars_0_slot0.vcfg"
-    "local\cfg\cs2_user_keys_0_slot0.vcfg"
-    "local\cfg\cs2_video.txt"
-) do (
-    if not exist "%source%\%%~F" (
-        echo 错误: 缺少必要文件 %source%\%%~F
-        exit /b 1
-    )
-)
-
 :: 检查目标根目录是否存在
 if not exist "%userdata_root%" (
     echo 错误: 目标根目录 %userdata_root% 不存在
@@ -61,7 +48,7 @@ for /D %%u in ("%userdata_root%\*") do (
             exit /b 1
         )
 
-        :: 复制干净的四文件版本
+        :: 直接复制恢复源中的全部文件
         echo 正在从 %source% 复制到 %%u\730...
         xcopy "%source%" "%%u\730" /E /H /C /I /Y
         if errorlevel 1 (

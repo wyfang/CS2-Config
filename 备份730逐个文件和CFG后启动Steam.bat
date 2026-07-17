@@ -36,23 +36,6 @@ if not exist "%new_source%" (
     exit /b 1
 )
 
-:: 确认四个必要文件同时存在于游戏目录和 730-Original 筛选目录
-for %%F in (
-    "local\cfg\cs2_machine_convars.vcfg"
-    "local\cfg\cs2_user_convars_0_slot0.vcfg"
-    "local\cfg\cs2_user_keys_0_slot0.vcfg"
-    "local\cfg\cs2_video.txt"
-) do (
-    if not exist "%source_original%\%%~F" (
-        echo 730-Original 缺少必要文件：%%~F
-        exit /b 1
-    )
-    if not exist "%source%\%%~F" (
-        echo 游戏 730 目录缺少必要文件：%%~F
-        exit /b 1
-    )
-)
-
 :: ------------------------------
 :: 获取当前时间戳（WMIC 在新版 Windows 中可能不存在，改用 PowerShell）
 :: ------------------------------
@@ -68,6 +51,8 @@ if not defined timestamp (
 set backupname=730-%timestamp%
 set backupfolder=%destination%\%backupname%
 if not exist "%backupfolder%" mkdir "%backupfolder%"
+set "missing_file=%TEMP%\cs2-backup-missing-%RANDOM%-%RANDOM%.txt"
+if exist "%missing_file%" del /Q "%missing_file%"
 
 :: ------------------------------
 :: 按照 730-Original 的结构有选择地备份文件
@@ -93,9 +78,18 @@ for /R "%source_original%" %%F in (*) do (
         )
         echo 已备份: !relpath!
     ) else (
-        echo 跳过: !relpath! (730 中不存在)
+        >>"%missing_file%" echo !relpath!
     )
     endlocal
+)
+
+if exist "%missing_file%" (
+    echo.
+    echo 以下清单文件在游戏 730 中不存在，本次已跳过：
+    type "%missing_file%"
+    del /Q "%missing_file%"
+) else (
+    echo 730-Original 清单中的文件已全部找到并完成备份。
 )
 
 :: ------------------------------
