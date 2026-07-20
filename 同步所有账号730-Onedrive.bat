@@ -11,10 +11,23 @@ if "%OneDrive%"=="" (
 :: 设置路径
 set "source=%OneDrive%\CS2\cfg\730"
 set "userdata_root=C:\Steam\userdata"
+set "cfg_source=%OneDrive%\CS2\cs2\cs2"
+set "cfg_destination=C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg"
 
 :: 检查源文件夹是否存在
 if not exist "%source%" (
     echo 错误: 源文件夹 %source% 不存在
+    exit /b 1
+)
+
+:: 检查 CFG 恢复源和游戏 CFG 目录是否存在
+if not exist "%cfg_source%" (
+    echo 错误: CFG 源文件夹 %cfg_source% 不存在
+    exit /b 1
+)
+
+if not exist "%cfg_destination%" (
+    echo 错误: 游戏 CFG 目录 %cfg_destination% 不存在
     exit /b 1
 )
 
@@ -65,6 +78,14 @@ for /D %%u in ("%userdata_root%\*") do (
 
 if "%processed%"=="0" (
     echo 错误: 没有找到可同步的 Steam 账号文件夹。
+    exit /b 1
+)
+
+:: CFG 为所有账号共用，只需恢复一次；不清空游戏 CFG 目录
+echo 正在从 %cfg_source% 恢复 CFG 到 %cfg_destination%...
+xcopy "%cfg_source%\*" "%cfg_destination%\" /E /H /C /I /Y
+if errorlevel 1 (
+    echo 错误: CFG 复制操作失败
     exit /b 1
 )
 

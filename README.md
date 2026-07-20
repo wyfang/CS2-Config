@@ -32,14 +32,16 @@
 | 脚本 | 功能 |
 | --- | --- |
 | [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | 将 `730-Original` 作为唯一文件清单，逐个从主账号 `C:\Steam\userdata\89582913\730` 备份对应文件。清单未来增加或删除文件时无需修改脚本。缺少的文件不会中断备份，而是在 730 备份结束后统一列出。脚本还会备份 `autoexec.cfg` 和所有 `wifi-*` CFG，两类时间戳备份各保留最近 5 份，完成后启动 Steam。 |
-| [`同步主账号730.bat`](./同步主账号730.bat) | 删除主账号的整个 `730`，重新创建目录，然后直接复制 `%OneDrive%\CS2\cfg\730` 中的全部文件。只处理账号 `89582913`，不会启动 Steam。 |
-| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | 遍历 `C:\Steam\userdata`，只处理包含 `config\localconfig.vdf` 的真实 Steam 账号目录。每个账号原有的 `730` 都会被完整删除，然后直接复制同一份恢复源。 |
+| [`同步主账号730.bat`](./同步主账号730.bat) | 删除主账号的整个 `730`，重新创建目录，然后直接复制 `%OneDrive%\CS2\cfg\730` 中的全部文件。随后把 `%OneDrive%\CS2\cs2\cs2` 中的全部 CFG 覆盖复制到游戏 CFG 目录，但不会清空该目录。只处理账号 `89582913`，不会启动 Steam。 |
+| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | 遍历 `C:\Steam\userdata`，只处理包含 `config\localconfig.vdf` 的真实 Steam 账号目录。每个账号原有的 `730` 都会被完整删除，然后直接复制同一份恢复源。全部账号完成后，将共享的 CFG 恢复一次，但不会清空游戏 CFG 目录。 |
 
 脚本使用以下固定路径和环境：
 
 - Steam 根目录：`C:\Steam`
 - OneDrive 环境变量：`%OneDrive%`
 - 完整恢复源 730：`%OneDrive%\CS2\cfg\730`
+- CFG 恢复源：`%OneDrive%\CS2\cs2\cs2`
+- 游戏 CFG 目录：`C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
 - 备份筛选模板：`%OneDrive%\CS2\730-Original`
 - 游戏 CFG：`C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
 

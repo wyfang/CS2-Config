@@ -11,10 +11,23 @@ if "%OneDrive%"=="" (
 :: 设置源文件夹路径
 set "source=%OneDrive%\CS2\cfg\730"
 set "destination=C:\Steam\userdata\89582913\730"
+set "cfg_source=%OneDrive%\CS2\cs2\cs2"
+set "cfg_destination=C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg"
 
 :: 检查源文件夹是否存在
 if not exist "%source%" (
     echo 错误: 源文件夹 %source% 不存在
+    exit /b 1
+)
+
+:: 检查 CFG 恢复源和游戏 CFG 目录是否存在
+if not exist "%cfg_source%" (
+    echo 错误: CFG 源文件夹 %cfg_source% 不存在
+    exit /b 1
+)
+
+if not exist "%cfg_destination%" (
+    echo 错误: 游戏 CFG 目录 %cfg_destination% 不存在
     exit /b 1
 )
 
@@ -41,6 +54,14 @@ echo 正在从 %source% 复制到 %destination%...
 xcopy "%source%" "%destination%" /E /H /C /I /Y
 if errorlevel 1 (
     echo 错误: 复制失败
+    exit /b 1
+)
+
+:: 不清空游戏 CFG 目录，只覆盖恢复源中存在的 CFG 文件
+echo 正在从 %cfg_source% 恢复 CFG 到 %cfg_destination%...
+xcopy "%cfg_source%\*" "%cfg_destination%\" /E /H /C /I /Y
+if errorlevel 1 (
+    echo 错误: CFG 复制失败
     exit /b 1
 )
 

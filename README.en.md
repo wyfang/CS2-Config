@@ -32,14 +32,16 @@ The repository root contains three personal maintenance scripts:
 | Script | Purpose |
 | --- | --- |
 | [`备份730逐个文件和CFG后启动Steam.bat`](./备份730逐个文件和CFG后启动Steam.bat) | Uses `730-Original` as the sole file manifest and backs up each corresponding file from the primary account at `C:\Steam\userdata\89582913\730`. Future additions or removals in the manifest require no script changes. Missing files do not stop the backup; they are listed together after the 730 backup finishes. The script also backs up `autoexec.cfg` and every `wifi-*` CFG, retains the five newest timestamped backups for each group, and launches Steam when finished. |
-| [`同步主账号730.bat`](./同步主账号730.bat) | Deletes the primary account's entire `730` folder, recreates it, and directly copies every file from `%OneDrive%\CS2\cfg\730`. It only processes account `89582913` and does not start Steam. |
-| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | Scans `C:\Steam\userdata` and only processes real Steam account directories containing `config\localconfig.vdf`. Each account's existing `730` folder is completely deleted, then the same restore source is copied in full. |
+| [`同步主账号730.bat`](./同步主账号730.bat) | Deletes the primary account's entire `730` folder, recreates it, and directly copies every file from `%OneDrive%\CS2\cfg\730`. It then copies all CFG files from `%OneDrive%\CS2\cs2\cs2` into the game's CFG directory without clearing that directory. It only processes account `89582913` and does not start Steam. |
+| [`同步所有账号730-Onedrive.bat`](./同步所有账号730-Onedrive.bat) | Scans `C:\Steam\userdata` and only processes real Steam account directories containing `config\localconfig.vdf`. Each account's existing `730` folder is completely deleted, then the same restore source is copied in full. After all accounts are processed, the shared CFG files are restored once without clearing the game's CFG directory. |
 
 The scripts use these fixed paths and environment settings:
 
 - Steam root: `C:\Steam`
 - OneDrive environment variable: `%OneDrive%`
 - Complete 730 restore source: `%OneDrive%\CS2\cfg\730`
+- CFG restore source: `%OneDrive%\CS2\cs2\cs2`
+- Game CFG directory: `C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
 - Backup selection template: `%OneDrive%\CS2\730-Original`
 - Game CFG directory: `C:\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg`
 
